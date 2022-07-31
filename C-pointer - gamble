@@ -1,1 +1,200 @@
 
+/*
+Taiquan Evans
+7/31/2022
+*/
+
+#include <iostream>
+
+#include <iostream>
+using namespace std;
+
+#include <stdio.h>
+
+#include <string>
+
+//random number generator
+#include<cstdlib>
+#include<ctime>
+
+//decleration
+int Guessing();
+
+int player_allowence = 400;
+int& enemy_allowence = player_allowence;
+
+int name;
+
+int bet;
+
+int main()
+{
+
+	Guessing();
+
+
+		return 0;
+}
+
+//vairables to represent my strings, explained more later.
+struct Difinetraits
+{
+	//rrepresents the type
+	string type;
+	//represents the face of the card
+	string value;
+	//represents the value of the card
+	int specialvalue;
+	//represents the status of the card in or out of play
+	int cardstatus;
+
+} Deck[53];
+
+string types[4] = { "Clubs","Diamond","Spades","Hearts" };
+string face[13] = { "Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight",
+					"Nine", "Ten", "Jack", "Queen", "King" };
+string status[3] = { "in play", "indeck", "discarded" };
+int cardvalues[13] = { 11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10 };
+
+
+int Guessing()
+{
+	//viarables
+	int no;
+	int yes;
+	int hit;
+	int stay;
+	int New_face = 0;
+	int dealt = 0;
+	int values = 0;
+
+	// turns the strings into a integers and randomizes the card that is pulled.
+	for (int x = 0; x < 52; x++)
+	{
+		//randomizes the face pulled.
+		Deck[x].value = face[New_face];
+		//randomizes the type of card class, and connects the integer
+		Deck[x].type = types[x % 13];
+		//connects the integer and string
+		Deck[x].specialvalue = cardvalues[x % 13];
+		//keeps the cards status remembered so it doesn't duplicate. and connects the integer
+		Deck[x].cardstatus = rand() % 3;
+		//makes it start with all cards and then move to the next. stops repeating cards
+		if ((x + 1) % 13 ==  0)
+			New_face++;
+	}
+
+	string card;
+
+	cout << "welcome to gamble" << endl;
+	cout << "input your name" << endl;
+	cin >> name;
+
+	cout << "great! " << name << ", Gamble is a gambling game where you want to have a higher score than your enemy." << endl;
+	cout << "You will be given a allowence of 400 coins. you will bet how every much you want, but if you go to zero you lose." << endl;
+	cout << "good luck!" << endl;
+	cout << endl;
+	//allows you to repeat
+	retry:
+	cout << "input amount to bet..." << endl;
+	cin >> bet;
+
+	cout << "ready? yes=1 or no=2" << endl;
+	cin >> yes;
+	if (yes == 1)
+	{
+
+
+		cout << "" << endl;
+		cout << "Lets Begin." << endl;
+
+		//limits the amount of players
+		for (int j = 0; j < 2; j++)
+		{
+			//allows repeat
+			again:
+			cout << "player " << j + 1 << "' has " << endl;
+			//limits the cards given
+			for (int i = 0; i < 2; i++)
+			{
+				//keeps te status of the cards
+				Deck[dealt].cardstatus = 0;
+				cout << Deck[dealt].value << " of " << Deck[dealt].type << endl;
+				//holds the values of the cards that are pulled.
+				values += Deck[dealt].specialvalue;
+				//makes it start with all cards and then move to the next.stops repeating cards.
+				dealt++;
+			}
+			cout << "total: " << values << endl;
+			cout << "hit? press 1, else 2 " << endl;
+			cin >> hit;
+			//allows you to add cards
+			if (hit == 1)
+			{
+				goto again;
+			}
+
+			//statement that lets you win or lose.
+			if (values == 21)
+			{
+				cout << "You Win!" << endl;
+				cout << "play again? yes or no..." << endl;
+				cin >> yes;
+
+				if (yes == 1)
+				{
+					goto retry;
+				}
+				else (yes == 2);
+				{
+					return 0;
+				}
+
+			}
+			//takes money when you lose
+			else if (values > 21 || values < values)
+			{
+				cout << "You lose! try again?" << endl;
+				player_allowence -= bet;
+				cout << "player balance: " << player_allowence << endl;
+				cout << "enemy balance: " << enemy_allowence << endl;
+
+				cout << "play again? yes or no..." << endl;
+				cin >> yes;
+
+				//allows another game
+				if (yes == 1)
+				{
+					goto retry;
+				}
+				else (yes == 2);
+				{
+					return 0;
+				}
+
+			}
+			//if player reaches zero they lose
+			while (player_allowence == 0)
+			{
+				cout << "you are broke, get out!" << endl;
+				cout << endl;
+				cout << "you've lost, goodbye" << endl;
+				return 0;
+			}
+		}
+	}
+	else
+
+	return 0;
+};
+
+//function for switching the money
+void transfering(int& a, int& b)
+{
+	//attaches a placement to variable a
+	int temp = a;
+	//makes the to variables equal
+	a = b;
+	//switches the b variable with a
+	b = temp;
+}
